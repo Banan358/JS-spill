@@ -1,6 +1,6 @@
 //logic
 
-const rute_status = {
+const tile_status = {
     HIDDEN: 'hidden',
     MINE: 'mine',
     NUMBER: 'number',
@@ -8,19 +8,20 @@ const rute_status = {
 }
 
 
-export function lagBrett(størrelse, antallBomber){
+export function createBoard(boardSize, numberOfMines){
     const board = []
-    for (let x = 0; x < størrelse; x++) {
+    for (let x = 0; x < boardSize; x++) {
         const row = []
-        for (let y = 0; y < størrelse; y++) {
-            const element = document.createElement('div')
-            element.dataset.status = rute_status.HIDDEN
-            const rute = {
+        for (let y = 0; y < boardSize; y++) {
+            const element = document.createElement("div")
+            element.dataset.status = tile_status.HIDDEN
+            
+            const tile = {
                 element,
                 x,
                 y
             }
-            row.push(rute) 
+            row.push(tile) 
         }
         board.push(row)
     }

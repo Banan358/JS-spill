@@ -29,8 +29,9 @@ body {
     padding: 10px;
     grid-template-columns: repeat(var(--size), 60px);
     grid-template-rows: repeat(var(--size), 60px);
-    gap: 4px;
+    gap: 0px;
     background-color: #777;
+    border-radius: 20px;
 }
 
 .board>* {
@@ -40,12 +41,20 @@ body {
     justify-content: center;
     align-items: center;
     color: white;
-    border: 2px solid #BBB;
     user-select: none;
 }
 
+.board>*:first-child{
+    border-radius: 12px 0 0;
+}
+
 .board>[data-status="hidden"] {
-    background-color: #BBB;
+    background-color: #38ff3e;
+    cursor: pointer;
+}
+
+.board>[data-status="hidden"]:nth-of-type(even) {
+    background-color: #52bd3a;
     cursor: pointer;
 }
 

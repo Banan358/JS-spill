@@ -8,6 +8,8 @@ export const TILE_STATUSES = {
 }
 
 
+// denne funksjonen lager et brett som jeg kan endre størrelsen på ved å ha et array 
+// av ruter og rader som nå starter som hidden, altså ingen av rutene er bomber enda
 export function createBoard(boardSize, numberOfMines) {
     const board = []
     const minePositions = getMinePositions(boardSize, numberOfMines)
@@ -37,7 +39,7 @@ export function createBoard(boardSize, numberOfMines) {
     }
 
     return board
-}
+} 
 
 
 export function markTile(tile) {
@@ -65,16 +67,38 @@ export function revealTile(board, tile) {
         return
     }
     
-    //måten dette funker er at det er en array og .length sier hvor mange elementer det er i arrayet som i dette tilfellet er en rundt i alle retninger fra der man klikket
+    //måten dette funker er at det er en array og .length sier hvor mange elementer som er "true"
+    // i arrayet som i dette tilfellet er en rundt i alle retninger fra der man klikket
     tile.status = TILE_STATUSES.NUMBER
     const adjecentTiles = nearbyTiles(board, tile)
     const mines = adjecentTiles.filter(t => t.mine)
     if (mines.length === 0){
-        adjecentTiles.forEach(revealTile.bind(null, board))
+        adjecentTiles.forEach(revealTile.bind(null, board)) //denne linjen gjør at alt rundt en tom rute blir automatisk "klikket" på sånn som i det faktiske spillet
     } else {
         tile.element.textContent = mines.length
     }
 }
+
+export function checkWin(board) {
+    return board.every(row => {
+        return row.every(tile => {
+            return tile.status === TILE_STATUSES.NUMBER ||
+            (tile.mine &&
+                (tile.status === TILE_STATUSES.Hidden || 
+                    tile.status === TILE_STATUSES.MARKED ))
+        })
+    })
+}
+
+export function checkLose(board) {
+    return board.some(row =>{
+        return row.some(tile => {
+            return tile.status === TILE_STATUSES.MINE
+        })
+    })
+}
+
+
 
 function getMinePositions(boardSize, numberOfMines) {
     const positions = []
@@ -83,7 +107,8 @@ function getMinePositions(boardSize, numberOfMines) {
         const position = {
             x: randomNumber(boardSize),
             y: randomNumber(boardSize),
-        }
+        } 
+        //legger til alle bombene som er spesifisert i NUMBER_OF_MINES
 
         if (!positions.some(positionMatch.bind(null, position))) {
             positions.push(position)

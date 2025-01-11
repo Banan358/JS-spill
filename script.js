@@ -81,11 +81,7 @@ function createNewBoard(boardSize, numberOfMines) {
     });
     brettElement.style.setProperty('--size', boardSize)
     flaggIgjen.textContent = numberOfMines
-    board = newBoard
-
-    console.log('Før oppdatering:', board);
-    board = newBoard;
-    console.log('Etter oppdatering:', board);
+    board = newBoard    
 }
 brettElement.style.setProperty('--size', BOARD_SIZE)
 flaggIgjen.textContent = NUMBER_OF_MINES

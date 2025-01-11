@@ -15,6 +15,7 @@ import  {
 let BOARD_SIZE = 9
 let NUMBER_OF_MINES = 10
 
+
 const difficultySelect = document.getElementById('difficulty')
 
 difficultySelect.addEventListener('change', vanskelighetsgrad)
@@ -117,35 +118,40 @@ function checkGameEnd() {
                 if (tile.mine) {
                     revealTile(board, tile);
                 } else if (tile.status === TILE_STATUSES.MARKED) {
-                    markTile(tile); // Fjern markeringen (vis feilmarkert flagg)
+                    markTile(tile); // Fjern markeringen (hvis feilmarkert flagg)
                 }
             })
         })
     }
 }
 
-function stopProp(e) {
-    e.stopImmediatePropagation()
-}
-
 const clock = document.getElementById("klokke")
 let klokke = 0
+let klokkeinterval
+
+starttimer()
 
 function timer() {
     klokke++
     clock.innerHTML = klokke 
 }
-const klokkeinterval = setInterval(timer, 1000)
+
+function starttimer() {
+    klokkeinterval = setInterval(timer, 1000);
+}
 
 function showPopup(result) {
     const popup = document.getElementById("popup")
     const popupMessage = document.getElementById("popupMessage")
+    const tid = document.getElementById("tid_brukt")
   
     
     if (result === "win") {
       popupMessage.textContent = "Gratulerer, du vant!"
+      tid.textContent = klokke + "sek"
     } else if (result === "lose") {
       popupMessage.textContent = "Beklager, du tapte!"
+      tid.textContent = ''
     }
   
     
@@ -162,12 +168,13 @@ function hidePopup() {
 document.getElementById("tryAgainBtn").addEventListener("click", function() {
     hidePopup()
     restartGame()
+    klokke = 0
+    starttimer()
 });
 
 function restartGame() {
     createNewBoard(BOARD_SIZE, NUMBER_OF_MINES); 
-    klokke = 0
     clock.innerHTML = klokke
     flaggIgjen.textContent = NUMBER_OF_MINES
-    listFlaggLeft() 
+    listFlaggLeft()
 }

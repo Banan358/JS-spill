@@ -66,7 +66,6 @@ button:hover {
     grid-template-rows: repeat(var(--size), 50px);
     gap: 0px;
     background-color: #777;
-    border-radius: 20px;
 }
 
 .board>* {
@@ -77,10 +76,6 @@ button:hover {
     align-items: center;
     color: white;
     user-select: none;
-}
-
-.board>*:first-child{
-    border-radius: 12px 0 0;
 }
 
 .board>[data-status="hidden"] {
@@ -94,9 +89,7 @@ button:hover {
 }
 
 .board>[data-status="marked"] {
-    background: 
-        url('flagg.png') center/contain no-repeat;
-    scale: 80%;
+   background-color: yellow;
 }
 
 .board>[data-status="mine"] {

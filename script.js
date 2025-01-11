@@ -62,6 +62,7 @@ board.forEach(row => {
 function createNewBoard(boardSize, numberOfMines) {
     const newBoard = createBoard(boardSize, numberOfMines); 
     brettElement.innerHTML = ''; 
+    klokke = 0
 
     newBoard.forEach(row => {
         row.forEach(tile => {
@@ -103,20 +104,21 @@ function checkGameEnd() {
     const lose = checkLose(board)
 
     if (win || lose) {
-        brettElement.addEventListener('click', stopProp, {capture: true})
-        brettElement.addEventListener('contextmenu', stopProp, {capture: true})
         clearInterval(klokkeinterval)
     }
 
     if(win) {
-        //pop up skjerm der det står at du har vunnet
+        showPopup("win")
     }
     if(lose) {
-        //pop up med tape og restart
-        board.forEach(row =>{
+        showPopup("lose")
+        board.forEach(row => {
             row.forEach(tile => {
-                if (tile.status === TILE_STATUSES.MARKED) markTile() // gjør at selv de som er markerte vises når man taper
-                if (tile.mine) revealTile(board, tile)
+                if (tile.mine) {
+                    revealTile(board, tile);
+                } else if (tile.status === TILE_STATUSES.MARKED) {
+                    markTile(tile); // Fjern markeringen (vis feilmarkert flagg)
+                }
             })
         })
     }
@@ -134,3 +136,38 @@ function timer() {
     clock.innerHTML = klokke 
 }
 const klokkeinterval = setInterval(timer, 1000)
+
+function showPopup(result) {
+    const popup = document.getElementById("popup")
+    const popupMessage = document.getElementById("popupMessage")
+  
+    
+    if (result === "win") {
+      popupMessage.textContent = "Gratulerer, du vant!"
+    } else if (result === "lose") {
+      popupMessage.textContent = "Beklager, du tapte!"
+    }
+  
+    
+    popup.style.display = "flex"
+}
+  
+  
+function hidePopup() {
+    const popup = document.getElementById("popup")
+    popup.style.display = "none"
+}
+  
+  
+document.getElementById("tryAgainBtn").addEventListener("click", function() {
+    hidePopup()
+    restartGame()
+});
+
+function restartGame() {
+    createNewBoard(BOARD_SIZE, NUMBER_OF_MINES); 
+    klokke = 0
+    clock.innerHTML = klokke
+    flaggIgjen.textContent = NUMBER_OF_MINES
+    listFlaggLeft() 
+}

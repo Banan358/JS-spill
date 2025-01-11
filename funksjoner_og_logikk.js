@@ -139,3 +139,4 @@ function nearbyTiles(board, { x, y }) {
 
     return tiles 
 } // denne funksjonen tar først et element til venstre og tar en og en i høyden før den går over til neste rekke
+

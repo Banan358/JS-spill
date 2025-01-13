@@ -132,40 +132,59 @@ function timer() {
     clock.innerHTML = klokke 
 }
 
+document.getElementById("pauseButton").addEventListener('click', () => {
+    showPopup("pause")
+})
+
 function starttimer() {
     klokkeinterval = setInterval(timer, 1000);
 }
+
+let timeOut = false
 
 function showPopup(result) {
     const popup = document.getElementById("popup")
     const popupMessage = document.getElementById("popupMessage")
     const tid = document.getElementById("tid_brukt")
-  
+
     
     if (result === "win") {
-      popupMessage.textContent = "Gratulerer, du vant!"
-      tid.textContent = klokke + "sek"
+        popupMessage.textContent = "Gratulerer, du vant!"
+        tid.textContent = klokke + "sek"
+        button.textContent = "prøv igjen"
     } else if (result === "lose") {
-      popupMessage.textContent = "Beklager, du tapte!"
-      tid.textContent = ''
+        popupMessage.textContent = "Beklager, du tapte!"
+        tid.textContent = ''
+        button.textContent = "prøv igjen"
+    } else if (result === "pause") {
+        popupMessage.textContent = "Pause"
+        tid.textContent = ''
+        clearInterval(klokkeinterval)
+        timeOut = true
+        button.textContent = "fortsett"
     }
-  
-    
+
+
     popup.style.display = "flex"
 }
-  
-  
+
 function hidePopup() {
     const popup = document.getElementById("popup")
     popup.style.display = "none"
 }
-  
-  
+
+const button = document.getElementById("tryAgainBtn")
 document.getElementById("tryAgainBtn").addEventListener("click", function() {
-    hidePopup()
-    restartGame()
-    klokke = 0
+    if (timeOut === true) {
+        timeOut = false
+        hidePopup()
+    } else {
+        hidePopup()
+        restartGame()
+        klokke = 0
+    }
     starttimer()
+    
 });
 
 function restartGame() {
